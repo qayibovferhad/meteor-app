@@ -1,0 +1,18 @@
+<template name="products">
+  {{#each getProducts}}
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <p class="card-text">{{price}}$</p>
+      <p>count:{{count}}</p>
+      <button class="btn btn-success" id="addBasket">Add Basket</button>
+      <a
+        href="{{pathFor 'productDetail' _id=_id}}"
+        class="btn btn-primary"
+        id="productDetail"
+        >Product Detail</a
+      >
+    </div>
+  </div>
+  {{/each}}
+</template>

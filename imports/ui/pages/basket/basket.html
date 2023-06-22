@@ -1,0 +1,14 @@
+<template name="basket">
+  <h1>Your Basket</h1>
+  {{#each getBasket}}
+  <div class="card" style="width: 18rem">
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <p class="card-text">{{price}}$</p>
+      <p>Aviable:{{count}}</p>
+      <input type="text" id="productInput" value="{{count}}" />
+      <button class="btn btn-success" id="buyBtn">Buy</button>
+    </div>
+  </div>
+  {{/each}}
+</template>

@@ -1,0 +1,6 @@
+<template name="login">
+  <div class="login">{{> loginButtons}}</div>
+  {{#if getCurrentUser}} {{#each getUsers}} {{#if getEmail emails}}
+  <h1>Welcome our site {{getEmail emails}}</h1>
+  {{/if}} {{/each}} {{/if}}
+</template>

@@ -1,0 +1,8 @@
+<template name="productDetail">
+  <h1>Product Detail Page</h1>
+  {{#with currentProduct}}
+  <h3>{{this.name}}</h3>
+  <p>Price: {{price}}</p>
+  <p>Count: {{count}}</p>
+  {{/with}}
+</template>
