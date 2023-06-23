@@ -1,18 +1,26 @@
 import "./products.html";
-import { Products, Basket } from "../../../api/collection";
+import { Template } from "meteor/templating";
+import { Products } from "../../../api/products/collection";
+import { Basket } from "../../../api/basket/collection";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Meteor } from "meteor/meteor";
+Template.products.onCreated(function () {
+  this.autorun(() => {
+    this.subscribe("get.products");
+  });
+});
 Template.products.helpers({
-  getProducts: function () {
-    console.log(Products.find());
+  getProducts() {
     return Products.find();
   },
 });
+
 Template.products.events({
-  "click #addBasket": function () {
-    let userId = Meteor.userId();
-    let data = { ...this, userId };
-    let result = Basket.insert(data);
+  "click #addBasket"() {
+    const userId = Meteor.userId();
+    const data = { ...this, userId };
+    console.log(Basket);
+    Meteor.call("add.basket", data);
     FlowRouter.go("/basket");
   },
 });

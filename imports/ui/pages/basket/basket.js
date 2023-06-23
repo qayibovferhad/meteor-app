@@ -1,35 +1,56 @@
 import "./basket.html";
-import { Products, Basket } from "../../../api/collection";
+import { Basket } from "../../../api/basket/collection";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 
 Template.basket.onCreated(function () {
   this.buyProduct = new ReactiveVar();
+  this.subscribe("get.basket");
+  this.subscribe("get.products");
 });
 
 Template.basket.helpers({
-  getBasket: function () {
+  getBasket() {
+    const productCount = Basket.find().count();
+    if (productCount === 0) {
+      return [{ message: "Your cart is empty" }];
+    }
+
     return Basket.find({ userId: Meteor.userId() });
   },
 });
+
 Template.basket.events({
-  "click #buyBtn": function (events, template) {
+  "click #buyBtn"(event, template) {
     template.buyProduct.set(this);
 
-    let input = document.getElementById("productInput").value;
-    let say = this.count - input;
-    if (this.count <= 0 && say < 0) {
+    const input = document.getElementById("productInput").value;
+    const countDifference = this.count - input;
+    if (this.count <= 0 || countDifference < 0) {
       return;
     }
-    console.log(template.buyProduct);
-    console.log("template.buyProduct", template.buyProduct);
-    Basket.update(this._id, {
-      $set: { count: say },
+
+    Meteor.call("update.basket", this._id, countDifference, (error) => {
+      if (!error) {
+        const newCount = this.count - input;
+        Meteor.call("update.products", this._id, newCount, (error) => {
+          if (!error) {
+            Meteor.call("remove.basket", this._id, (error) => {
+              if (!error) {
+                FlowRouter.go("/");
+              }
+            });
+          }
+        });
+      }
     });
-    var newCount = Basket.find({}, { fields: { count: 1 } }).map(
-      (doc) => doc.count
-    );
-    Products.update(this._id, { $set: { count: newCount[0] } });
-    Basket.remove(this._id);
-    FlowRouter.go("/");
+  },
+
+  "click #removeBtn"(event, template) {
+    Meteor.call("remove.basket", this._id);
+  },
+  "click .clearAllBasket"(event, template) {
+    Meteor.call("clear.all.basket", (error) => {
+      console.log("error", error);
+    });
   },
 });

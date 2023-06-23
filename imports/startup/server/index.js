@@ -1,4 +1,7 @@
 import "../../api/products/collection";
-import { Mongo } from "meteor/mongo";
+import "../../api/products/publications";
+import "../../api/products/methods";
 
-export const Products = new Mongo.Collection("products");
+import "../../api/basket/collection";
+import "../../api/basket/methods";
+import "../../api/basket/publications";

@@ -1,14 +1,17 @@
 <template name="basket">
-  <h1>Your Basket</h1>
-  {{#each getBasket}}
+  {{#each getBasket}} {{#if message}}
+  <h1>{{message}}</h1>
+  {{else}}
   <div class="card" style="width: 18rem">
     <div class="card-body">
       <h5 class="card-title">{{name}}</h5>
       <p class="card-text">{{price}}$</p>
       <p>Aviable:{{count}}</p>
       <input type="text" id="productInput" value="{{count}}" />
-      <button class="btn btn-success" id="buyBtn">Buy</button>
+      <button class="btn btn-danger mt-3" id="removeBtn">Remove</button>
+      <button class="btn btn-success mt-3" id="buyBtn">Buy</button>
     </div>
   </div>
-  {{/each}}
+  {{/if}} {{/each}}
+  <button class="btn btn-danger clearAllBasket">Clear All</button>
 </template>

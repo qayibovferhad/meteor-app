@@ -4,17 +4,26 @@ import "../../ui/layout/mainLayout";
 import "../../ui/pages/home/home";
 import "../../ui/pages/login/login";
 import "../../ui/pages/products/products";
+import "../../ui/pages/products/productDetail";
 import "../../ui/pages/basket/basket";
+import "../../ui/pages/notFound/notFound";
+FlowRouter.triggers.enter([trackRouteEntry], {
+  except: ["App.login"],
+});
+FlowRouter.triggers.enter([trackRouteNotEntry], {
+  only: ["App.login"],
+});
 FlowRouter.route("/", {
-  name: "home",
+  name: "App.home",
   action() {
-    BlazeLayout.render("mainLayout", {
-      main: "home",
-    });
+    (document.title = "Home"),
+      BlazeLayout.render("mainLayout", {
+        main: "home",
+      });
   },
 });
 FlowRouter.route("/login", {
-  name: "login",
+  name: "App.login",
   action() {
     BlazeLayout.render("mainLayout", {
       login: "login",
@@ -22,16 +31,17 @@ FlowRouter.route("/login", {
   },
 });
 FlowRouter.route("/products", {
-  name: "products",
+  name: "App.products",
   action() {
     BlazeLayout.render("mainLayout", {
       main: "products",
     });
   },
 });
+
 FlowRouter.route("/productDetail/:_id", {
-  name: "productDetail",
-  action(params) {
+  name: "App.productDetail",
+  action() {
     BlazeLayout.render("mainLayout", {
       main: "productDetail",
     });
@@ -39,10 +49,31 @@ FlowRouter.route("/productDetail/:_id", {
 });
 
 FlowRouter.route("/basket", {
-  name: "basket",
+  name: "App.basket",
   action() {
     BlazeLayout.render("mainLayout", {
       main: "basket",
     });
   },
 });
+
+FlowRouter.route("*", {
+  name: "notFound",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      main: "notFound",
+    });
+  },
+});
+
+function trackRouteEntry(context, redirect) {
+  if (!Meteor.userId()) {
+    redirect("/login");
+  }
+}
+
+function trackRouteNotEntry(context, redirect) {
+  if (Meteor.userId()) {
+    redirect("/");
+  }
+}
