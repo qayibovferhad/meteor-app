@@ -20,3 +20,16 @@ Meteor.methods({
     Basket.remove({ userId: Meteor.userId() });
   },
 });
+Meteor.methods({
+  checkBasketItem(productId) {
+    const userId = Meteor.userId();
+    const existingItem = Basket.findOne({ userId, productId });
+
+    if (existingItem) {
+      throw new Meteor.Error(
+        "item-already-exists",
+        "The item already exists in the basket."
+      );
+    }
+  },
+});

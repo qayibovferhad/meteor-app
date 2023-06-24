@@ -2,16 +2,19 @@
   {{#each getBasket}} {{#if message}}
   <h1>{{message}}</h1>
   {{else}}
+
   <div class="card" style="width: 18rem">
     <div class="card-body">
       <h5 class="card-title">{{name}}</h5>
       <p class="card-text">{{price}}$</p>
-      <p>Aviable:{{count}}</p>
-      <input type="text" id="productInput" value="{{count}}" />
+      <input type="numbers" class="productInput" value="1" />
+      <button id="editBtn" disabled>Edit</button>
       <button class="btn btn-danger mt-3" id="removeBtn">Remove</button>
       <button class="btn btn-success mt-3" id="buyBtn">Buy</button>
     </div>
   </div>
-  {{/if}} {{/each}}
-  <button class="btn btn-danger clearAllBasket">Clear All</button>
+
+  {{/if}} {{/each}} {{#if getClearAllButton}}
+  <button class="mt-2 btn btn-danger clearAllBasket">Clear All</button>
+  {{/if}}
 </template>

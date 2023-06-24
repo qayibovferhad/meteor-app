@@ -1,6 +1,7 @@
 import "./basket.html";
 import { Basket } from "../../../api/basket/collection";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
+import { Products } from "../../../api/products/collection";
 
 Template.basket.onCreated(function () {
   this.buyProduct = new ReactiveVar();
@@ -10,39 +11,59 @@ Template.basket.onCreated(function () {
 
 Template.basket.helpers({
   getBasket() {
-    const productCount = Basket.find().count();
+    const productCount = Basket.find({ userId: Meteor.userId() }).count();
     if (productCount === 0) {
       return [{ message: "Your cart is empty" }];
     }
 
     return Basket.find({ userId: Meteor.userId() });
   },
+
+  getClearAllButton() {
+    return Basket.find({ userId: Meteor.userId() }).count() > 0;
+  },
 });
 
 Template.basket.events({
-  "click #buyBtn"(event, template) {
-    template.buyProduct.set(this);
-
-    const input = document.getElementById("productInput").value;
-    const countDifference = this.count - input;
-    if (this.count <= 0 || countDifference < 0) {
-      return;
-    }
-
-    Meteor.call("update.basket", this._id, countDifference, (error) => {
-      if (!error) {
-        const newCount = this.count - input;
-        Meteor.call("update.products", this._id, newCount, (error) => {
-          if (!error) {
-            Meteor.call("remove.basket", this._id, (error) => {
-              if (!error) {
-                FlowRouter.go("/");
-              }
-            });
-          }
-        });
-      }
+  "input .productInput"(event, template) {
+    const editBtn = event.currentTarget.parentNode.querySelector("#editBtn");
+    const newCount = +event.currentTarget.value;
+    const basketItem = Basket.findOne({
+      userId: Meteor.userId(),
+      productId: this.productId,
     });
+
+    if (newCount > 0 && newCount <= basketItem.count) {
+      editBtn.disabled = false;
+    } else {
+      editBtn.disabled = true;
+    }
+  },
+
+  "click #editBtn"(event, template) {
+    const productId = this.productId;
+    const newCount =
+      +event.currentTarget.parentNode.querySelector(".productInput").value;
+    const basketItem = Basket.findOne({ userId: Meteor.userId(), productId });
+
+    Meteor.call("update.basket", basketItem._id, newCount);
+  },
+  "click #buyBtn"(event, template) {
+    const basketItem = Basket.findOne({
+      userId: Meteor.userId(),
+      productId: this.productId,
+    });
+    const productItem = Products.findOne({
+      userId: Meteor.userId(),
+      productId: this.productId,
+    });
+
+    Meteor.call(
+      "update.products",
+      productItem.productId,
+      productItem.count - basketItem.count
+    );
+    Meteor.call("remove.basket", this._id);
   },
 
   "click #removeBtn"(event, template) {
@@ -50,7 +71,7 @@ Template.basket.events({
   },
   "click .clearAllBasket"(event, template) {
     Meteor.call("clear.all.basket", (error) => {
-      console.log("error", error);
+      console.log(error);
     });
   },
 });
