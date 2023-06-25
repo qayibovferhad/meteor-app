@@ -1,18 +1,27 @@
 import "./products.html";
 import { Template } from "meteor/templating";
-import { Products } from "../../../api/products/collection";
+import { Products, Products_Images } from "../../../api/products/collection";
 import { Basket } from "../../../api/basket/collection";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Random } from "meteor/random";
 import { Meteor } from "meteor/meteor";
 Template.products.onCreated(function () {
   this.autorun(() => {
-    this.subscribe("get.products");
+    this.subscribe("get.product");
   });
 });
 Template.products.helpers({
   getProducts() {
     return Products.find();
+  },
+
+  getImg(productId) {
+    let productImage = Products_Images.findOne({ "meta.secondId": productId });
+    if (productImage) {
+      return productImage.link();
+    } else {
+      return "/default-image.jpg";
+    }
   },
 });
 

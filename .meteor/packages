@@ -31,3 +31,5 @@ facebook-config-ui
 accounts-ui
 ostrio:flow-router-extra
 kadira:blaze-layout
+ostrio:files
+reywood:publish-composite

@@ -1,12 +1,12 @@
 import "./basket.html";
 import { Basket } from "../../../api/basket/collection";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { Products } from "../../../api/products/collection";
+import { Products, Products_Images } from "../../../api/products/collection";
 
 Template.basket.onCreated(function () {
   this.buyProduct = new ReactiveVar();
   this.subscribe("get.basket");
-  this.subscribe("get.products");
+  this.subscribe("get.product");
 });
 
 Template.basket.helpers({
@@ -18,9 +18,20 @@ Template.basket.helpers({
 
     return Basket.find({ userId: Meteor.userId() });
   },
-
   getClearAllButton() {
     return Basket.find({ userId: Meteor.userId() }).count() > 0;
+  },
+  getProductImage(productId) {
+    const product = Products.findOne({ productId });
+    if (product) {
+      const productImage = Products_Images.findOne({
+        "meta.secondId": product.productId,
+      });
+      if (productImage) {
+        return productImage.link();
+      }
+    }
+    return "/default-image.jpg";
   },
 });
 
@@ -41,12 +52,15 @@ Template.basket.events({
   },
 
   "click #editBtn"(event, template) {
-    const productId = this.productId;
     const newCount =
       +event.currentTarget.parentNode.querySelector(".productInput").value;
-    const basketItem = Basket.findOne({ userId: Meteor.userId(), productId });
+    const basketItem = Basket.findOne({
+      userId: Meteor.userId(),
+      productId: this.productId,
+    });
 
     Meteor.call("update.basket", basketItem._id, newCount);
+    document.querySelector("#editBtn").disabled = true;
   },
   "click #buyBtn"(event, template) {
     const basketItem = Basket.findOne({
@@ -54,7 +68,6 @@ Template.basket.events({
       productId: this.productId,
     });
     const productItem = Products.findOne({
-      userId: Meteor.userId(),
       productId: this.productId,
     });
 

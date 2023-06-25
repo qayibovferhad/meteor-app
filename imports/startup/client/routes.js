@@ -6,12 +6,13 @@ import "../../ui/pages/login/login";
 import "../../ui/pages/products/products";
 import "../../ui/pages/products/productDetail";
 import "../../ui/pages/basket/basket";
+import "../../ui/pages/form/form";
 import "../../ui/pages/notFound/notFound";
 FlowRouter.triggers.enter([trackRouteEntry], {
-  except: ["App.login"],
+  except: ["App.login", "App.form"],
 });
 FlowRouter.triggers.enter([trackRouteNotEntry], {
-  only: ["App.login"],
+  only: ["App.login", "App.form"],
 });
 FlowRouter.route("/", {
   name: "App.home",
@@ -38,7 +39,14 @@ FlowRouter.route("/products", {
     });
   },
 });
-
+FlowRouter.route("/form", {
+  name: "App.form",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      login: "form",
+    });
+  },
+});
 FlowRouter.route("/productDetail/:_id", {
   name: "App.productDetail",
   action() {

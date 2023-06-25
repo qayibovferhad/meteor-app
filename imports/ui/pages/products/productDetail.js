@@ -1,7 +1,7 @@
 import { Template } from "meteor/templating";
 import { ReactiveVar } from "meteor/reactive-var";
 import { FlowRouter } from "meteor/ostrio:flow-router-extra";
-import { Products } from "../../../api/products/collection";
+import { Products, Products_Images } from "../../../api/products/collection";
 
 import "./productDetail.html";
 
@@ -19,7 +19,7 @@ Template.productDetail.onCreated(function () {
         _id: this.productId.get(),
       };
 
-      this.subscribe("get.products", query);
+      this.subscribe("get.product", query);
     }
   });
 });
@@ -27,5 +27,12 @@ Template.productDetail.onCreated(function () {
 Template.productDetail.helpers({
   currentProduct() {
     return Products.findOne({ _id: Template.instance().productId.get() });
+  },
+
+  getImg() {
+    let query = {
+      "meta.productId": Template.instance().productId.get(),
+    };
+    return Products_Images.findOne(query).link();
   },
 });
