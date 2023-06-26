@@ -3,10 +3,6 @@ Meteor.publish({
   "get.products": function (query = {}, limit = 100, skip = 0) {
     return Products.find(query);
   },
-
-  // "get.image": function (query = {}) {
-  //   return Products_Images.find(query).cursor;
-  // },
 });
 Meteor.publishComposite(
   "get.product",

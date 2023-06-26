@@ -3,6 +3,7 @@ import "./form.html";
 import { Random } from "meteor/random";
 Template.form.onCreated(function () {
   this.loading = new ReactiveVar(false);
+  this.subscribe("get.products");
 });
 Template.form.helpers({
   getLoading: function () {
@@ -48,11 +49,10 @@ Template.form.events({
       } else {
         alert(`file: ${fileObj.name} successfully uploaded`);
         formData.img = fileObj._id;
-        Meteor.call("addProduct", formData);
+        Meteor.call("add.products", formData);
       }
       template.loading.set(false);
     });
     upload.start();
-    console.log(productName, productPrice, productCount, file);
   },
 });

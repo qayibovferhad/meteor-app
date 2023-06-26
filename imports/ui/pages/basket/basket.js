@@ -83,8 +83,6 @@ Template.basket.events({
     Meteor.call("remove.basket", this._id);
   },
   "click .clearAllBasket"(event, template) {
-    Meteor.call("clear.all.basket", (error) => {
-      console.log(error);
-    });
+    Meteor.call("clear.all.basket");
   },
 });

@@ -4,3 +4,8 @@ Meteor.methods({
     Products.update({ productId }, { $set: { count: newCount } });
   },
 });
+Meteor.methods({
+  "add.products": function (data) {
+    Products.insert(data);
+  },
+});

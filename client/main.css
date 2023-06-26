@@ -1,4 +1,6 @@
-body {
-  padding: 10px;
-  font-family: sans-serif;
+.navbar {
+  background-color: black !important;
+}
+.navbar a {
+  color: white !important;
 }
