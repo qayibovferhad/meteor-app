@@ -1,9 +1,12 @@
-import { Products_Images } from "../../../api/products/collection";
+import {
+  Products_Images,
+  productValidationContext,
+} from "../../../api/products/collection";
 import "./form.html";
 import { Random } from "meteor/random";
 Template.form.onCreated(function () {
   this.loading = new ReactiveVar(false);
-  this.subscribe("get.products");
+  this.subscribe("get.product");
 });
 Template.form.helpers({
   getLoading: function () {
@@ -14,8 +17,9 @@ Template.form.events({
   "submit #productForm": function (event, template) {
     event.preventDefault();
 
-    let productName = $("#productName").val();
-    let productPrice = parseInt($("#productPrice").val());
+    let productName = $("#name").val();
+    console.log(typeof productName.value);
+    let productPrice = parseInt($("#price").val());
     let productCount = parseInt($("#productCount").val());
     let file = document.getElementById("productImage").files[0];
     let formData = {
@@ -25,6 +29,20 @@ Template.form.events({
       price: productPrice,
       count: productCount,
     };
+    productValidationContext.reset();
+
+    formData = productValidationContext.clean(formData);
+    productValidationContext.validate(formData);
+    $("input").removeClass("is-invalid");
+    if (!productValidationContext.isValid()) {
+      productValidationContext.validationErrors().map((err) => {
+        console.log("err", err);
+        $(`#${err.name}`).addClass("is-invalid");
+        $(`.feedback-${err.name}`).text(`Error:${err.type}`);
+      });
+      return;
+    }
+
     const upload = Products_Images.insert(
       {
         fileId: Random.id(),

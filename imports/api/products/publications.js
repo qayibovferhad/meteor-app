@@ -1,9 +1,9 @@
 import { Products, Products_Images } from "./collection";
-Meteor.publish({
-  "get.products": function (query = {}, limit = 100, skip = 0) {
-    return Products.find(query);
-  },
-});
+// Meteor.publish({
+//   "get.products": function (query = {}, limit = 100, skip = 0) {
+//     return Products.find(query);
+//   },
+// });
 Meteor.publishComposite(
   "get.product",
   function (query = {}, limit = 100, skip = 0) {

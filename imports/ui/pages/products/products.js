@@ -1,8 +1,6 @@
 import "./products.html";
 import { Template } from "meteor/templating";
 import { Products, Products_Images } from "../../../api/products/collection";
-import { Basket } from "../../../api/basket/collection";
-import { FlowRouter } from "meteor/ostrio:flow-router-extra";
 import { Random } from "meteor/random";
 import { Meteor } from "meteor/meteor";
 Template.products.onCreated(function () {

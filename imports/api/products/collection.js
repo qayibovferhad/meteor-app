@@ -1,5 +1,5 @@
 import { Mongo } from "meteor/mongo";
-
+import SimpleSchema from "simpl-schema";
 export const Products = new Mongo.Collection("products");
 
 import { FilesCollection } from "meteor/ostrio:files";
@@ -15,3 +15,27 @@ export const Products_Images = new FilesCollection({
     return "Please upload image,with size equal or less than 10MB";
   },
 });
+
+const Schema = {};
+
+Schema.Product = new SimpleSchema({
+  name: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  count: {
+    type: Number,
+  },
+  img: {
+    type: String,
+    optional: true,
+  },
+  productId: {
+    type: String,
+  },
+});
+
+export const productValidationContext = Schema.Product.namedContext("product");
+Products.attachSchema(Schema.Product);
