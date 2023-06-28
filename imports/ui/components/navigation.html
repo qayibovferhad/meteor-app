@@ -30,9 +30,20 @@
           <li class="nav-item">
             <a class="nav-link" href="/form">Form</a>
           </li>
-          <li class="nav-item"></li>
+
           {{#if currentUser}}
-          <button class="btn btn-danger logoutButton">Logout</button>
+
+          <li class="nav-item">
+            <button class="btn btn-danger logoutButton">Logout</button>
+          </li>
+          {{/if}} {{#if currentUser}}
+          <li class="nav-item mt-2 mx-2">
+            <select name="changeLng" id="changeLng">
+              <option value="en">EN</option>
+              <option value="az">AZ</option>
+              <option value="tr">TR</option>
+            </select>
+          </li>
           {{/if}}
         </ul>
       </div>
