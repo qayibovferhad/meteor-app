@@ -4,7 +4,7 @@ import { Template } from "meteor/templating";
 Template.home.helpers({
   getEmail() {
     const user = Meteor.user();
-    const email = user?.emails?.[0]?.address;
+    const email = user?.profile.firstname + " " + user.profile.lastname;
     return email || "";
   },
 });

@@ -30,8 +30,12 @@ Template.productDetail.helpers({
   },
 
   getImg() {
+    const productItem = Products.findOne({
+      _id: Template.instance().productId.get(),
+    });
+
     let query = {
-      "meta.productId": Template.instance().productId.get(),
+      "meta.secondId": productItem.productId,
     };
     return Products_Images.findOne(query).link();
   },

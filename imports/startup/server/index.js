@@ -5,3 +5,6 @@ import "../../api/products/methods";
 import "../../api/basket/collection";
 import "../../api/basket/methods";
 import "../../api/basket/publications";
+
+import "../../api/users/collection";
+import "../../api/users/methods";

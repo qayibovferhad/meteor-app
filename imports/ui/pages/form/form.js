@@ -29,10 +29,12 @@ Template.form.events({
       price: productPrice,
       count: productCount,
     };
+
     productValidationContext.reset();
 
     formData = productValidationContext.clean(formData);
     productValidationContext.validate(formData);
+
     $("input").removeClass("is-invalid");
     if (!productValidationContext.isValid()) {
       productValidationContext.validationErrors().map((err) => {
@@ -60,6 +62,7 @@ Template.form.events({
     upload.on("start", function () {
       template.loading.set(true);
     });
+
     upload.on("end", function (error, fileObj) {
       if (error) {
         alert("error: " + error);
@@ -71,6 +74,7 @@ Template.form.events({
       }
       template.loading.set(false);
     });
+
     upload.start();
   },
 });

@@ -8,12 +8,18 @@ import "../../ui/pages/products/productDetail";
 import "../../ui/pages/basket/basket";
 import "../../ui/pages/form/form";
 import "../../ui/pages/notFound/notFound";
+import "../../ui/pages/users/users";
+import "../../ui/pages/users/changePassword";
+import "../../ui/pages/users/forgotpassword";
+import "../../ui/pages/users/resetpassword";
+
 FlowRouter.triggers.enter([trackRouteEntry], {
-  except: ["App.login", "App.form"],
+  except: ["App.login", "App.form", "App.users"],
 });
 FlowRouter.triggers.enter([trackRouteNotEntry], {
   only: ["App.login", "App.form"],
 });
+
 FlowRouter.route("/", {
   name: "App.home",
   action() {
@@ -64,12 +70,45 @@ FlowRouter.route("/basket", {
     });
   },
 });
+FlowRouter.route("/users", {
+  name: "App.users",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      login: "users",
+    });
+  },
+});
+FlowRouter.route("/changepassword", {
+  name: "App.changePassword",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      main: "changePassword",
+    });
+  },
+});
+FlowRouter.route("/forgotpassword", {
+  name: "App.forgotpassword",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      login: "forgotpassword",
+    });
+  },
+});
+FlowRouter.route("/reset-password/:_link", {
+  name: "App.resetpassword",
+  action() {
+    BlazeLayout.render("mainLayout", {
+      login: "resetpassword",
+    });
+  },
+});
 
 FlowRouter.route("*", {
   name: "notFound",
   action() {
     BlazeLayout.render("mainLayout", {
       main: "notFound",
+      login: "notFound",
     });
   },
 });

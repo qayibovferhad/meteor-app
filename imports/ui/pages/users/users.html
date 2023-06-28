@@ -1,0 +1,66 @@
+<template name="users">
+  {{#if getCurrentUser}}
+  <h1>{{getCurrentUser.username}}</h1>
+  {{/if}}
+  <div class="container registerContainer">
+    <form id="register">
+      <div class="form-group">
+        <label for="firstname">First Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="firstname"
+          id="firstname"
+          aria-describedby="emailHelp"
+          placeholder="First Name"
+        />
+        <div class="invalid-feedback feedback-firstname"></div>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Last Name</label>
+        <input
+          type="text"
+          class="form-control"
+          name="lastname"
+          id="lastname"
+          placeholder="Last Name"
+        />
+        <div class="invalid-feedback feedback-lastname"></div>
+      </div>
+      <div class="form-group">
+        <label for="lastname">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          name="username"
+          id="username"
+          placeholder="Username"
+        />
+        <div class="invalid-feedback feedback-lastname"></div>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          class="form-control"
+          name="email"
+          id="email"
+          placeholder="Email Address"
+        />
+        <div class="invalid-feedback feedback-email"></div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          placeholder="Password"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </form>
+  </div>
+</template>
